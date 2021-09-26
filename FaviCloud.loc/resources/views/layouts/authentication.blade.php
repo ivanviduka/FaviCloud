@@ -10,7 +10,7 @@
 <nav class="navbar navbar-light navbar-expand-lg mb-5" style="background-color: #e3f2fd;">
     <div class="container">
 
-        <img class="navbar-brand mr-auto" src='storage/app/img/favicode.png' alt="Favicode logo">
+        <img class="navbar-brand mr-auto" src="{{asset('/img/favicode.png')}}" alt="Favicode logo" width="90px" height="90px">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,7 +22,7 @@
                         <a class="nav-link" href="{{ route('login') }}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register-user') }}">Register</a>
+                        <a class="nav-link" href="{{ route('register') }}">Register</a>
                     </li>
                 @else
                     <li class="nav-item">

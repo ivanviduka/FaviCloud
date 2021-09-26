@@ -26,11 +26,10 @@ class AuthController extends Controller
 
         $credentials = $request->only('username', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/')
-                ->withSuccess('Signed in');
+            return redirect()->intended('/');
         }
 
-        return redirect("login")->withSuccess('Login details are not valid');
+        return redirect("login");
     }
 
 
@@ -43,9 +42,9 @@ class AuthController extends Controller
     public function customRegistration(Request $request)
     {
         $request->validate([
-            'first_name' => 'required', 'regex:/^[a-zA-Z ]+$/',
-            'last_name' => 'required', 'regex:/^[a-zA-Z ]+$/',
-            'username' => 'required|unique:users',
+            'first_name' => ['required', 'regex:/^[a-zA-Z]+$/', 'max:50'],
+            'last_name' => ['required', 'regex:/^[a-zA-Z]+$/', 'max:50'],
+            'username' => 'required|unique:users|max:50',
             'email' => 'required|email:rfc,dns|unique:users',
             'password' => 'required|min:6|confirmed',
 
@@ -54,7 +53,7 @@ class AuthController extends Controller
         $data = $request->all();
         $check = $this->create($data);
 
-        return redirect("/")->withSuccess('You have signed-in');
+        return redirect("login");
     }
 
 
@@ -73,7 +72,7 @@ class AuthController extends Controller
     public function dashboard()
     {
         if (Auth::check()) {
-            return view('/');
+            return view('dashboard');
         }
 
         return redirect("login")->withSuccess('You are not allowed to access');
