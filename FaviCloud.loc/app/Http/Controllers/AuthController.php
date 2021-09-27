@@ -14,7 +14,17 @@ class AuthController extends Controller
 
     public function index()
     {
-        return view('authentication.login');
+
+        if (Auth::check()) {
+            return redirect("/");
+        }
+
+        else {
+            return view('authentication.login');
+        }
+
+
+
     }
 
 
@@ -27,7 +37,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('username', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/');
+            return redirect("/");
         }
 
         return redirect()->back()->withErrors(['invalid_data' => 'Username or password is invalid']);
@@ -73,10 +83,10 @@ class AuthController extends Controller
     public function dashboard()
     {
         if (Auth::check()) {
-            return view('dashboard');
+            return redirect("files");
         }
 
-        return redirect("login")->withSuccess('You are not allowed to access');
+        return redirect("login")->withErrors(['invalid_data' =>'You are not allowed to access']);
     }
 
 
