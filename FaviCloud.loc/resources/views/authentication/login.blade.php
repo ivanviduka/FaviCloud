@@ -10,6 +10,13 @@
                         <div class="card-body">
                             <form method="POST" action="{{ route('login.custom') }}">
                                 @csrf
+
+                                @if($errors->has('invalid_data'))
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $errors->first('invalid_data') }}
+                                    </div>
+                                @endif
+
                                 <div class="form-group mb-3">
                                     <input type="text" placeholder="Username" id="username" class="form-control" name="username" required
                                            autofocus>

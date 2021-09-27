@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Hash;
+use Illuminate\Support\Facades\Redirect;
 use Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,7 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        return redirect("login");
+        return redirect()->back()->withErrors(['invalid_data' => 'Username or password is invalid']);
     }
 
 
