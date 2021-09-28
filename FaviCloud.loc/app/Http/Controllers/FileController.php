@@ -10,10 +10,8 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
-    //
 
     protected $files;
-
 
     public function __construct(FileRepository $files)
     {
@@ -25,8 +23,6 @@ class FileController extends Controller
         return view('dashboard.index', [
             'files' => $this->files->forUser($request->user()),
             ]);
-
-
 
     }
 
