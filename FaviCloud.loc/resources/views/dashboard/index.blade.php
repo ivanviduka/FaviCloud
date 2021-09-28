@@ -3,8 +3,6 @@
 
 @section('content')
 
-@section('content')
-
     @if (count($files) > 0)
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -47,4 +45,3 @@
 @endsection
 
 
-@endsection

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Custom Auth in Laravel</title>
+    <title>User Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -18,7 +18,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                     <li class="nav-item">
-                        <form action="{{ route('file.add') }}" method="POST" class="form-horizontal">
+                        <form action="{{ route('file.form') }}" method="GET" class="form-horizontal">
                             <button type="submit" class="btn btn-primary btn-block m-2">Add new file</button>
                         </form>
                     </li>

@@ -13,11 +13,11 @@ class CreateFilesTable extends Migration
      */
     public function up()
     {
-        Schema::table('files', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->string("file_name")->unique();
             $table->string("path");
-            $table->boolean("isPublic");
+            $table->boolean("is_public");
             $table->timestamps();
             $table->integer("file_size");
             $table->string("file_type");

@@ -16,16 +16,10 @@ class FileController extends Controller
 
     public function __construct(FileRepository $files)
     {
-        $this->middleware('auth');
-
         $this->files = $files;
     }
 
     public function index(Request $request){
-
-        if (!Auth::check()) {
-            return view('authentication.login');
-        }
 
         return view('dashboard.index', [
             'files' => $this->files->forUser($request->user()),
@@ -35,11 +29,34 @@ class FileController extends Controller
 
     }
 
+    public function createForm(){
+        return view('dashboard.file-upload');
+    }
+
     public function addFile(Request $request){
 
         $this->validate($request, [
-            'file' => 'required|max:100000|file|filled|mimes:png,jpg,jpeg,csv,txt,xlx,xls,pdf'
+            'file' => 'required|max:100000|file|filled|mimes:png,jpg,jpeg,csv,txt,xlx,xls,pdf,doc,docx,xml'
         ]);
+
+        $fileModel = new File;
+
+        if($request->file()) {
+            $fileName = time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('uploads', $fileName, 'public');
+
+            $fileModel->file_name = time().'_'.$request->file->getClientOriginalName();
+            $fileModel->path = '/storage/' . $filePath;
+            $fileModel->is_public = $request->has('public_check');
+            $fileModel->file_size = $request->file('file')->getSize();
+            $fileModel->file_type = $request->file('file')->extension();
+            $fileModel->user_id = auth()->id();
+            $fileModel->save();
+
+            return back()
+                ->with('success','File has been uploaded.')
+                ->with('file', $fileName);
+        }
     }
 
 }
