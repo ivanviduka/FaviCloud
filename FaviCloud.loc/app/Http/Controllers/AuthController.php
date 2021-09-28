@@ -14,17 +14,12 @@ class AuthController extends Controller
 
     public function index()
     {
-
         if (Auth::check()) {
             return redirect("/");
         }
 
-        else {
-            return view('authentication.login');
-        }
-
+        return view('authentication.login');
     }
-
 
     public function customLogin(Request $request)
     {
@@ -41,12 +36,13 @@ class AuthController extends Controller
         return redirect()->back()->withErrors(['invalid_data' => 'Username or password is invalid']);
     }
 
-
     public function registration()
     {
+        if (Auth::check()) {
+            return redirect("/");
+        }
         return view('authentication.registration');
     }
-
 
     public function customRegistration(Request $request)
     {
@@ -65,7 +61,6 @@ class AuthController extends Controller
         return redirect("login");
     }
 
-
     public function create(array $data)
     {
         return User::create([
@@ -77,7 +72,6 @@ class AuthController extends Controller
         ]);
     }
 
-
     public function dashboard()
     {
         if (Auth::check()) {
@@ -86,7 +80,6 @@ class AuthController extends Controller
 
         return redirect("login")->withErrors(['invalid_data' =>'You are not allowed to access']);
     }
-
 
     public function signOut()
     {

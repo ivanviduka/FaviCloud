@@ -30,10 +30,6 @@ Route::middleware('auth')->group(function () {
 
 
 
-
-
-
-
 // Login Routes
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('custom-login', [AuthController::class, 'customLogin'])->name('login.custom');
