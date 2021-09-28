@@ -12,17 +12,19 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
 
-    public function index()
+
+    public function __construct()
     {
 
+    }
+
+    public function index()
+    {
         if (Auth::check()) {
             return redirect("/");
         }
 
-        else {
-            return view('authentication.login');
-        }
-
+        return view('authentication.login');
     }
 
 
@@ -44,6 +46,9 @@ class AuthController extends Controller
 
     public function registration()
     {
+        if (Auth::check()) {
+            return redirect("/");
+        }
         return view('authentication.registration');
     }
 
