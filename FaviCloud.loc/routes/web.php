@@ -21,17 +21,18 @@ use Illuminate\Support\Facades\Route;
 
 //File Routes
 Route::middleware('auth')->group(function () {
-    Route::get('/', [FileController::class, 'index'])->name("files");
+    Route::get('/', [FileController::class, 'index'])->name("homepage");
     Route::post('file', [FileController::class, 'addFile'])->name("file.upload");
     Route::get('file', [FileController::class, 'createForm'])->name("file.form");
     Route::delete('file/{file}', [FileController::class, 'deleteFile'])->name("file.delete");
-
+    Route::get('download/{file_name}', [FileController::class, 'downloadFile'])->name("file.download");
 });
 
-//Route::get('/',  [FileController::class, 'index'])->name("files");
-//Route::post('file', [FileController::class, 'addFile'])->name("file.upload");
-//Route::get('file', [FileController::class, 'createForm']);
-//Route::delete('file/{file}', [FileController::class, 'deleteFile'])->name("file.delete");
+
+
+
+
+
 
 // Login Routes
 Route::get('login', [AuthController::class, 'index'])->name('login');

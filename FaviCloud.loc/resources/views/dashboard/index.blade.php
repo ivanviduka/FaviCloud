@@ -5,29 +5,40 @@
 
     @if (count($files) > 0)
         <div class="panel panel-default">
-            <div class="panel-heading">
-                MY FILES
-            </div>
-
             <div class="panel-body">
-                <table class="table table-striped task-table">
+                <table class="table table-hover">
 
-                    <!-- Table Headings -->
                     <thead>
-                    <th>File Name</th>
-                    <th>&nbsp;</th>
+                        <th scope="col">File Name</th>
+                        <th scope="col">Size</th>
+                        <th scope="col"> </th>
+                        <th scope="col"> </th>
                     </thead>
 
-                    <!-- Table Body -->
                     <tbody>
                     @foreach ($files as $file)
                         <tr>
-                            <!-- Task Name -->
                             <td class="table-text">
-                                <div>{{ $file->file_name }}</div>
+                                <a href="{{route('file.download', ['file_name'=>$file->file_name])}}">{{ $file->file_name }}</a>
+                            </td>
+
+                            <td class="table-text">
+                                <div>{{ $file->file_size }}</div>
                             </td>
 
                             <td>
+                                <!-- TODO -- UPDATE FILE NAME -->
+                                <form action="" method="POST">
+                                    {{ csrf_field() }}
+
+                                    <button>Rename File</button>
+                                </form>
+
+
+                            </td>
+
+                            <td>
+                                <!-- TODO -- DELETE FILE -->
                                 <form action="/file/{{ $file->id }}" method="POST">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
