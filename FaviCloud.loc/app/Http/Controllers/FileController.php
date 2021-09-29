@@ -19,19 +19,22 @@ class FileController extends Controller
         $this->files = $files;
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         return view('dashboard.index', [
             'files' => $this->files->forUser($request->user()),
-            ]);
+        ]);
 
     }
 
-    public function createForm(){
+    public function createForm()
+    {
         return view('dashboard.file-upload');
     }
 
-    public function addFile(Request $request){
+    public function addFile(Request $request)
+    {
 
         $this->validate($request, [
             'file' => 'required|max:100000|file|filled|mimes:png,jpg,jpeg,csv,txt,xlx,xls,pdf,doc,docx,xml,html',
@@ -41,11 +44,11 @@ class FileController extends Controller
 
         $fileModel = new File;
 
-        if($request->file()) {
-            $fileName = time().'_'.$request->file->getClientOriginalName();
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->file->getClientOriginalName();
             $filePath = $request->file('file')->storeAs('uploads', $fileName);
 
-            $fileModel->file_name = time().'_'.$request->file->getClientOriginalName();
+            $fileModel->file_name = time() . '_' . $request->file->getClientOriginalName();
             $fileModel->description = $request->description;
             $fileModel->path = '/storage/app/' . $filePath;
             $fileModel->is_public = $request->has('public_check');
@@ -55,19 +58,21 @@ class FileController extends Controller
             $fileModel->save();
 
             return back()
-                ->with('success','File has been uploaded.')
+                ->with('success', 'File has been uploaded.')
                 ->with('file', $fileName);
         }
     }
 
-    public function downloadFile($file_name){
-        $download_link = storage_path('app/uploads/'. $file_name);
+    public function downloadFile($file_name)
+    {
+        $download_link = storage_path('app/uploads/' . $file_name);
         if (file_exists($download_link)) {
             return response()->download($download_link);
         }
     }
 
-    public function createUpdateForm($file_id) {
+    public function createUpdateForm($file_id)
+    {
         $currentFile = $this->files->getFile($file_id);
 
         $name_without_extension = pathinfo($currentFile->file_name, PATHINFO_FILENAME);
@@ -80,16 +85,16 @@ class FileController extends Controller
         session(['original_name' => $currentFile->file_name]);
         session(['file_type' => $currentFile->file_type]);
 
-
-        $currentValues = array('file_name' => $current_name, 'file_description' =>$current_description,
+        $currentValues = array('file_name' => $current_name, 'file_description' => $current_description,
             'file_public' => $current_public);
 
         return view('dashboard.file-update')->with('data', $currentValues);
     }
 
-    public function updateFile(Request $request) {
+    public function updateFile(Request $request)
+    {
 
-        if(!(session()->has('file_id') && session()->has('original_name') && session()->has('file_type'))){
+        if (!(session()->has('file_id') && session()->has('original_name') && session()->has('file_type'))) {
             return redirect("/");
         }
 
@@ -98,14 +103,14 @@ class FileController extends Controller
             'description' => 'max:255',
         ]);
 
-        $fileName = time().'_'.$request->file_name.'.'.session()->get('file_type');
-        Storage::move('uploads/'.session()->get('original_name'), 'uploads/'.$fileName);
+        $fileName = time() . '_' . $request->file_name . '.' . session()->get('file_type');
+        Storage::move('uploads/' . session()->get('original_name'), 'uploads/' . $fileName);
 
         $fileModel = new File;
         $fileModel->where('id', session()->get('file_id'))->update(
             ['file_name' => $fileName,
-            'description' => $request->description,
-            'is_public' => $request->has('public_check')]);
+                'description' => $request->description,
+                'is_public' => $request->has('public_check')]);
 
         session()->forget('file_id');
         session()->forget('original_name');
@@ -114,30 +119,28 @@ class FileController extends Controller
         return redirect("/");
     }
 
-    public function deleteFile($file_id) {
+    public function deleteFile($file_id)
+    {
 
         $fileName = $this->files->getFileName($file_id);
-
-        Storage::delete('uploads/'.$fileName->file_name);
-
+        Storage::delete('uploads/' . $fileName->file_name);
         File::where('id', $file_id)->delete();
 
         return redirect("/");
     }
 
-    public function shareFile($file_id) {
+    public function shareFile($file_id)
+    {
 
-        if($this->files->getOwner($file_id)->user_id != auth()->id()){
+        if ($this->files->getOwner($file_id)->user_id != auth()->id()) {
             return redirect("/");
         }
 
         $file = $this->files->getPublic($file_id);
         $fileName = $this->files->getFileName($file_id);
 
-
-
-        $values = array('is_public' =>$file->is_public,
-            'path'=>storage_path('app/uploads/'. $fileName->file_name));
+        $values = array('is_public' => $file->is_public,
+            'path' => storage_path('app/uploads/' . $fileName->file_name));
 
         return view('dashboard.file-share')->with('data', $values);
     }

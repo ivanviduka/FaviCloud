@@ -1,4 +1,3 @@
-
 @extends('layouts.dashboard')
 
 @section('content')
@@ -24,13 +23,13 @@
             @endif
 
             <div class="custom-file mb-3">
-                <label for="chooseFile">Select file</label>
-                <input type="file" name="file" class="custom-file-input" id="chooseFile">
+                <label for="chooseFile" class="form-label">Select file</label>
+                <input type="file" name="file" class="form-control" id="chooseFile">
             </div>
 
             <div class="mb-3">
-                <label for="fileDescription" class="form-label">Description</label>
-                <input type="text" name="description" class="form-control" id="fileDescription">
+                <input type="text" name="description" class="form-control" placeholder="File Description"
+                       id="fileDescription">
             </div>
 
             <div class="form-check mb-3">
@@ -44,11 +43,6 @@
                 Upload Files
             </button>
 
-
         </form>
-
-
     </div>
 @endsection
-
-

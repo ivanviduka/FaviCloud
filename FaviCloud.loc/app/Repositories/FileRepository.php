@@ -19,7 +19,6 @@ class FileRepository
         return File::select('file_name', 'description', 'is_public', 'file_type')->where('id', $file_id)->first();
     }
 
-
     public function getFileName($file_id){
         return File::select('file_name')->where('id', $file_id)->first();
     }

@@ -6,7 +6,7 @@
 
             @if($data['is_public'])
                 <div class="mb-3">
-                    <label for="fileName" class="form-label">Link to File</label>
+                    <h3 class="form-label">Link to File</h3>
                     <input type="text" name="file_name" value="{{$data['path']}}" class="form-control"
                            id="fileName">
                 </div>
