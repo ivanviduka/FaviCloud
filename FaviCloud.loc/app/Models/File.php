@@ -9,7 +9,7 @@ class File extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['file_name', 'path', 'is_public', 'file_size', 'file_type'];
+    protected $fillable = ['file_name', 'description', 'path', 'is_public', 'file_size', 'file_type'];
 
     public function user()
     {

@@ -10,6 +10,7 @@
 
                     <thead>
                         <th scope="col">File Name</th>
+                        <th scope="col">Description</th>
                         <th scope="col">Size</th>
                         <th scope="col"> </th>
                         <th scope="col"> </th>
@@ -23,13 +24,16 @@
                             </td>
 
                             <td class="table-text">
+                                <div>{{ $file->description }}</div>
+                            </td>
+
+                            <td class="table-text">
                                 <div>{{ $file->file_size }}</div>
                             </td>
 
                             <td>
                                 <!-- TODO -- UPDATE FILE NAME -->
-                                <form action="" method="POST">
-                                    {{ csrf_field() }}
+                                <form action="/update/{{ $file->id }}" method="GET">
 
                                     <button>Rename File</button>
                                 </form>
