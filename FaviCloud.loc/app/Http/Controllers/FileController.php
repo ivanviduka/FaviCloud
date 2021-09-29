@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Repositories\FileRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Session;
 
@@ -64,11 +65,25 @@ class FileController extends Controller
     }
 
     public function downloadFile($file_name)
-    {
+    {   $file_id =  $this->files->getIdWithName($file_name);
+        $file_public =  $this->files->getPublic($file_id->id);
+        $file_owner = $this->files->getOwner($file_id->id);
+
+        if((auth()->id()==$file_owner->user_id) || $file_public->is_public){
+            $download_link = storage_path('app/uploads/' . $file_name);
+            if (file_exists($download_link)) {
+                return response()->download($download_link);
+            }
+        }
+
+        else{
+            return redirect('/unauthorized-download');
+        }
+        /*
         $download_link = storage_path('app/uploads/' . $file_name);
         if (file_exists($download_link)) {
             return response()->download($download_link);
-        }
+        }*/
     }
 
     public function createUpdateForm($file_id)
@@ -138,9 +153,12 @@ class FileController extends Controller
 
         $file = $this->files->getPublic($file_id);
         $fileName = $this->files->getFileName($file_id);
+        $download_link = request()->getHost().':'.request()->getPort().'/download/'.$fileName->file_name;
+
+
 
         $values = array('is_public' => $file->is_public,
-            'path' => storage_path('app/uploads/' . $fileName->file_name));
+            'path' => $download_link);
 
         return view('dashboard.file-share')->with('data', $values);
     }
