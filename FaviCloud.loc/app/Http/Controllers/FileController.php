@@ -138,9 +138,12 @@ class FileController extends Controller
 
         $file = $this->files->getPublic($file_id);
         $fileName = $this->files->getFileName($file_id);
+        $download_link = request()->getHost().':'.request()->getPort().'/download/'.$fileName->file_name;
+
+
 
         $values = array('is_public' => $file->is_public,
-            'path' => storage_path('app/uploads/' . $fileName->file_name));
+            'path' => $download_link);
 
         return view('dashboard.file-share')->with('data', $values);
     }
