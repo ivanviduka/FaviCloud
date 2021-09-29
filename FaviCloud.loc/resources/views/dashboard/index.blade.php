@@ -68,7 +68,8 @@
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
 
-                                    <button class="btn btn-outline-danger">Delete File</button>
+                                    <button class="btn btn-outline-danger"
+                                            onclick="return confirm('Are you sure you want to delete this file?')">Delete File</button>
                                 </form>
                             </td>
                         </tr>
