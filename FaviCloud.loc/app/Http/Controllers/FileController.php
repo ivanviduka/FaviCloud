@@ -125,5 +125,20 @@ class FileController extends Controller
         return redirect("/");
     }
 
+    public function shareFile($file_id) {
 
+        if($this->files->getOwner($file_id)->user_id != auth()->id()){
+            return redirect("/");
+        }
+
+        $file = $this->files->getPublic($file_id);
+        $fileName = $this->files->getFileName($file_id);
+
+
+
+        $values = array('is_public' =>$file->is_public,
+            'path'=>storage_path('app/uploads/'. $fileName->file_name));
+
+        return view('dashboard.file-share')->with('data', $values);
+    }
 }
