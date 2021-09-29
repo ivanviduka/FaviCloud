@@ -23,8 +23,8 @@
             @endif
 
             <div class="mb-3">
-                <label for="fileName" class="form-label">Name</label>
-                <input type="text" name="description" value="{{$data['file_name']}}" class="form-control"
+                <label for="fileName" class="form-label">File Name</label>
+                <input type="text" name="file_name" value="{{$data['file_name']}}" class="form-control"
                        id="fileName">
             </div>
 
@@ -48,6 +48,10 @@
                         Make file public
                     </label>
                 @endif
+            </div>
+
+            <div>
+
             </div>
 
             <button type="submit" name="submit" class="btn btn-primary btn-block mt-4">
