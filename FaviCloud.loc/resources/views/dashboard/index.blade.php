@@ -33,9 +33,7 @@
 
                             <td>
                                 <!-- TODO -- UPDATE FILE NAME -->
-                                <form action="/update/{{ $file->id }}" method="POST">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
+                                <form action="/update/{{ $file->id }}" method="GET">
 
                                     <button>Rename File</button>
                                 </form>

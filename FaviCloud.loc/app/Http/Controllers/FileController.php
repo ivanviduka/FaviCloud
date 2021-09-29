@@ -65,4 +65,21 @@ class FileController extends Controller
         }
     }
 
+    public function createUpdateForm($file_id) {
+        $currentFile = $this->files->getFile($file_id);
+
+        $current_name = substr($currentFile->file_name, strpos($currentFile->file_name, "_") + 1);
+        $current_description = $currentFile->description;
+        $current_public = $currentFile->is_public;
+
+        $currentValues = array('file_name' => $current_name, 'file_description' =>$current_description, 'file_public' => $current_public);
+
+        return view('dashboard.file-update')->with('data', $currentValues);
+    }
+
+    public function  updateFile(Request $request) {
+
+
+    }
+
 }
