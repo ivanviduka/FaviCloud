@@ -33,7 +33,8 @@ class FileController extends Controller
     public function addFile(Request $request){
 
         $this->validate($request, [
-            'file' => 'required|max:100000|file|filled|mimes:png,jpg,jpeg,csv,txt,xlx,xls,pdf,doc,docx,xml'
+            'file' => 'required|max:100000|file|filled|mimes:png,jpg,jpeg,csv,txt,xlx,xls,pdf,doc,docx,xml',
+            'description' => 'max:255'
         ]);
 
         $fileModel = new File;
@@ -43,6 +44,7 @@ class FileController extends Controller
             $filePath = $request->file('file')->storeAs('uploads', $fileName);
 
             $fileModel->file_name = time().'_'.$request->file->getClientOriginalName();
+            $fileModel->description = $request->description;
             $fileModel->path = '/storage/app/' . $filePath;
             $fileModel->is_public = $request->has('public_check');
             $fileModel->file_size = $request->file('file')->getSize();

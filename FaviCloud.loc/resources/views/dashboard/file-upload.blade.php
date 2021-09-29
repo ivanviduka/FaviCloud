@@ -23,12 +23,17 @@
                 </div>
             @endif
 
-            <div class="custom-file">
+            <div class="custom-file mb-3">
                 <label for="chooseFile">Select file</label>
                 <input type="file" name="file" class="custom-file-input" id="chooseFile">
             </div>
 
-            <div class="form-check">
+            <div class="mb-3">
+                <label for="fileDescription" class="form-label">Description</label>
+                <input type="text" name="description" class="form-control" id="fileDescription">
+            </div>
+
+            <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" value="" name="public_check" id="public_check">
                 <label class="form-check-label" for="public_check">
                     Make file public
