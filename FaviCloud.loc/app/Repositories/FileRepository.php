@@ -23,4 +23,11 @@ class FileRepository
     public function getFileName($file_id){
         return File::select('file_name')->where('id', $file_id)->first();
     }
+
+    public function getPublic($file_id){
+        return File::select('is_public')->where('id', $file_id)->first();
+    }
+    public function getOwner($file_id){
+        return File::select('user_id')->where('id', $file_id)->first();
+    }
 }

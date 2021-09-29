@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('update/{file}', [FileController::class, 'createUpdateForm'])->name("file.updateForm");
     Route::post('update', [FileController::class, 'updateFile'])->name("file.update");
     Route::get('download/{file_name}', [FileController::class, 'downloadFile'])->name("file.download");
+    Route::get('share/{file_id}', [FileController::class, 'shareFile'])->name("file.share");
 });
 
 
