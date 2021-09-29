@@ -87,7 +87,7 @@ class FileController extends Controller
         return view('dashboard.file-update')->with('data', $currentValues);
     }
 
-    public function  updateFile(Request $request) {
+    public function updateFile(Request $request) {
 
         if(!(session()->has('file_id') && session()->has('original_name') && session()->has('file_type'))){
             return redirect("/");
@@ -102,26 +102,28 @@ class FileController extends Controller
         Storage::move('uploads/'.session()->get('original_name'), 'uploads/'.$fileName);
 
         $fileModel = new File;
-        //$fileModel->file_name = time().'_'.$request->file_name;
-        //$fileModel->description = $request->description;
-        //$fileModel->is_public = $request->has('public_check');
         $fileModel->where('id', session()->get('file_id'))->update(
             ['file_name' => $fileName,
             'description' => $request->description,
             'is_public' => $request->has('public_check')]);
 
-
-
         session()->forget('file_id');
         session()->forget('original_name');
         session()->forget('file_type');
 
+        return redirect("/");
+    }
 
+    public function deleteFile($file_id) {
+
+        $fileName = $this->files->getFileName($file_id);
+
+        Storage::delete('uploads/'.$fileName->file_name);
+
+        File::where('id', $file_id)->delete();
 
         return redirect("/");
-
-
-
     }
+
 
 }
