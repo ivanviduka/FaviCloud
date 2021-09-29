@@ -15,10 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return view('dashboard.index');
-//});
-
 //File Routes
 Route::middleware('auth')->group(function () {
     Route::get('/', [FileController::class, 'index'])->name("homepage");
@@ -30,8 +26,6 @@ Route::middleware('auth')->group(function () {
     Route::get('download/{file_name}', [FileController::class, 'downloadFile'])->name("file.download");
     Route::get('share/{file_id}', [FileController::class, 'shareFile'])->name("file.share");
 });
-
-
 
 // Login Routes
 Route::get('login', [AuthController::class, 'index'])->name('login');
