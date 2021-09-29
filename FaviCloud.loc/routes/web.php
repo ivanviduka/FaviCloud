@@ -23,9 +23,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('file/{file}', [FileController::class, 'deleteFile'])->name("file.delete");
     Route::get('update/{file}', [FileController::class, 'createUpdateForm'])->name("file.updateForm");
     Route::post('update', [FileController::class, 'updateFile'])->name("file.update");
-    Route::get('download/{file_name}', [FileController::class, 'downloadFile'])->name("file.download");
+    //Route::get('download/{file_name}', [FileController::class, 'downloadFile'])->name("file.download");
     Route::get('share/{file_id}', [FileController::class, 'shareFile'])->name("file.share");
 });
+
+Route::get('download/{file_name}', [FileController::class, 'downloadFile'])->name("file.download");
 
 // Login Routes
 Route::get('login', [AuthController::class, 'index'])->name('login');
