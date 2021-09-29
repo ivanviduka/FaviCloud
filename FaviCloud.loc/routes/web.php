@@ -38,5 +38,10 @@ Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
 Route::get('registration', [AuthController::class, 'registration'])->name('register');
 Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom');
 
+//Error Routes
+Route::get('unauthorized-download', function (){
+    return view("error.unauthorized");
+});
+
 
 

@@ -77,7 +77,7 @@ class FileController extends Controller
         }
 
         else{
-            return redirect('/');
+            return redirect('/unauthorized-download');
         }
         /*
         $download_link = storage_path('app/uploads/' . $file_name);
