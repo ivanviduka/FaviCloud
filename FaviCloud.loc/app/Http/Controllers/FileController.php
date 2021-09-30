@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Repositories\FileRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Session;
 
@@ -22,7 +21,6 @@ class FileController extends Controller
 
     public function index(Request $request)
     {
-
         return view('dashboard.index', [
             'files' => $this->files->forUser($request->user()),
         ]);
@@ -36,8 +34,7 @@ class FileController extends Controller
 
     public function addFile(Request $request)
     {
-
-        $this->validate($request, [
+        $request->validate([
             'file' => 'required|max:100000|file|filled|mimes:png,jpg,jpeg,csv,txt,xlx,xls,pdf,doc,docx,xml,html',
             'description' => 'max:255',
 
@@ -62,6 +59,7 @@ class FileController extends Controller
                 ->with('success', 'File has been uploaded.')
                 ->with('file', $fileName);
         }
+        return back()->with('error', 'No file in request');
     }
 
     public function downloadFile($file_name)
@@ -79,11 +77,7 @@ class FileController extends Controller
         else{
             return redirect('/unauthorized-download');
         }
-        /*
-        $download_link = storage_path('app/uploads/' . $file_name);
-        if (file_exists($download_link)) {
-            return response()->download($download_link);
-        }*/
+
     }
 
     public function createUpdateForm($file_id)
@@ -100,7 +94,8 @@ class FileController extends Controller
         session(['original_name' => $currentFile->file_name]);
         session(['file_type' => $currentFile->file_type]);
 
-        $currentValues = array('file_name' => $current_name, 'file_description' => $current_description,
+        $currentValues = array('file_name' => $current_name,
+            'file_description' => $current_description,
             'file_public' => $current_public);
 
         return view('dashboard.file-update')->with('data', $currentValues);
@@ -108,12 +103,11 @@ class FileController extends Controller
 
     public function updateFile(Request $request)
     {
-
         if (!(session()->has('file_id') && session()->has('original_name') && session()->has('file_type'))) {
             return redirect("/");
         }
 
-        $this->validate($request, [
+        $request->validate([
             'file_name' => 'required|max:100',
             'description' => 'max:255',
         ]);
@@ -123,7 +117,7 @@ class FileController extends Controller
 
         $fileModel = new File;
         $fileModel->where('id', session()->get('file_id'))->update(
-            ['file_name' => $fileName,
+                ['file_name' => $fileName,
                 'description' => $request->description,
                 'is_public' => $request->has('public_check')]);
 
@@ -136,7 +130,6 @@ class FileController extends Controller
 
     public function deleteFile($file_id)
     {
-
         $fileName = $this->files->getFileName($file_id);
         Storage::delete('uploads/' . $fileName->file_name);
         File::where('id', $file_id)->delete();
@@ -154,8 +147,6 @@ class FileController extends Controller
         $file = $this->files->getPublic($file_id);
         $fileName = $this->files->getFileName($file_id);
         $download_link = request()->getHost().':'.request()->getPort().'/download/'.$fileName->file_name;
-
-
 
         $values = array('is_public' => $file->is_public,
             'path' => $download_link);
