@@ -69,7 +69,9 @@
                                     {{ method_field('DELETE') }}
 
                                     <button class="btn btn-outline-danger"
-                                            onclick="return confirm('Are you sure you want to delete this file?')">Delete File</button>
+                                            onclick="return confirm('Are you sure you want to delete this file?')">
+                                        Delete File
+                                    </button>
                                 </form>
                             </td>
                         </tr>

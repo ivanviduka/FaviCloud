@@ -19,16 +19,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('files/{id}', function($id) {
+Route::get('files/{id}', function ($id) {
     $files = File::where('id', $id)->get()->toJson(JSON_PRETTY_PRINT);
     return response($files, 200);
 });
-Route::get('files', function() {
+Route::get('files', function () {
     $files = File::all()->toJson(JSON_PRETTY_PRINT);
     return response($files, 200);
 });
 
-Route::get('user-files/{user_id}', function($user_id) {
+Route::get('user-files/{user_id}', function ($user_id) {
     $files = File::where('user_id', $user_id)->get()->toJson(JSON_PRETTY_PRINT);
     return response($files, 200);
 });

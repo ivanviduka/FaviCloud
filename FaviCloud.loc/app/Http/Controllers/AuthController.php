@@ -77,7 +77,7 @@ class AuthController extends Controller
             return redirect("files");
         }
 
-        return redirect("login")->withErrors(['invalid_data' =>'You are not allowed to access']);
+        return redirect("login")->withErrors(['invalid_data' => 'You are not allowed to access']);
     }
 
     public function signOut()
