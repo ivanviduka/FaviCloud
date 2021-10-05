@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Session;
 
 
+
 class FileController extends Controller
 {
 
@@ -142,7 +143,7 @@ class FileController extends Controller
             return redirect("/");
         }
 
-        $downloadLink = request()->getHost() . ':' . request()->getPort() . '/download/' . $fileForShare->file_name;
+        $downloadLink = route('file.download', ['file_name' => $fileForShare->file_name]);
 
         $values = array('is_public' => $fileForShare->is_public,
             'path' => $downloadLink);
