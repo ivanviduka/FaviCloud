@@ -64,11 +64,9 @@ class FileController extends Controller
 
     public function downloadFile($file_name)
     {
-        $fileId = $this->files->getIdWithName($file_name);
-        $filePublic = $this->files->getPublic($fileId->id);
-        $fileOwner = $this->files->getOwner($fileId->id);
+        $fileForDownload = $this->files->getFileWithName($file_name);
 
-        if ((auth()->id() == $fileOwner->user_id) || $filePublic->is_public) {
+        if ((auth()->id() == $fileForDownload->user_id) || $fileForDownload->is_public) {
             $downloadLink = storage_path('app/uploads/' . $file_name);
             if (file_exists($downloadLink)) {
                 return response()->download($downloadLink);
@@ -138,16 +136,15 @@ class FileController extends Controller
 
     public function shareFile($file_id)
     {
+        $fileForShare = $this->files->getFile($file_id);
 
-        if ($this->files->getOwner($file_id)->user_id != auth()->id()) {
+        if ($fileForShare->user_id != auth()->id()) {
             return redirect("/");
         }
 
-        $file = $this->files->getPublic($file_id);
-        $fileName = $this->files->getFileName($file_id);
-        $downloadLink = request()->getHost() . ':' . request()->getPort() . '/download/' . $fileName->file_name;
+        $downloadLink = request()->getHost() . ':' . request()->getPort() . '/download/' . $fileForShare->file_name;
 
-        $values = array('is_public' => $file->is_public,
+        $values = array('is_public' => $fileForShare->is_public,
             'path' => $downloadLink);
 
         return view('dashboard.file-share')->with('data', $values);
