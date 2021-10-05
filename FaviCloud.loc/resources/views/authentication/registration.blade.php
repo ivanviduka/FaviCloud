@@ -12,7 +12,8 @@
                             <form action="{{ route('register.custom') }}" method="POST">
                                 @csrf
                                 <div class="form-group mb-3">
-                                    <input type="text" placeholder="First Name" id="first_name" class="form-control" name="first_name"
+                                    <input type="text" placeholder="First Name" id="first_name" class="form-control"
+                                           name="first_name"
                                            required autofocus>
                                     @if ($errors->has('first_name'))
                                         <span class="text-danger">{{ $errors->first('first_name') }}</span>
@@ -20,7 +21,8 @@
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <input type="text" placeholder="Last Name" id="last_name" class="form-control" name="last_name"
+                                    <input type="text" placeholder="Last Name" id="last_name" class="form-control"
+                                           name="last_name"
                                            required autofocus>
                                     @if ($errors->has('last_name'))
                                         <span class="text-danger">{{ $errors->first('last_name') }}</span>
@@ -28,7 +30,8 @@
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <input type="text" placeholder="Username" id="username" class="form-control" name="username"
+                                    <input type="text" placeholder="Username" id="username" class="form-control"
+                                           name="username"
                                            required autofocus>
                                     @if ($errors->has('username'))
                                         <span class="text-danger">{{ $errors->first('username') }}</span>
@@ -52,13 +55,13 @@
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <input type="password" placeholder="Confirm Password" id="password_confirmation" class="form-control"
+                                    <input type="password" placeholder="Confirm Password" id="password_confirmation"
+                                           class="form-control"
                                            name="password_confirmation" required>
                                     @if ($errors->has('password_confirmation'))
                                         <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
                                     @endif
                                 </div>
-
 
 
                                 <div class="d-grid mx-auto">

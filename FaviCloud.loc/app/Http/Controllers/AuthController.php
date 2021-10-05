@@ -46,8 +46,8 @@ class AuthController extends Controller
     public function customRegistration(Request $request)
     {
         $request->validate([
-            'first_name' => ['required', 'regex:/^[a-zA-Z]+$/', 'max:50'],
-            'last_name' => ['required', 'regex:/^[a-zA-Z]+$/', 'max:50'],
+            'first_name' => ['required', 'regex:/^[a-žA-Ž]+$/', 'max:50'],
+            'last_name' => ['required', 'regex:/^[a-žA-Ž]+$/', 'max:50'],
             'username' => 'required|unique:users|max:50',
             'email' => 'required|email:rfc,dns|unique:users',
             'password' => 'required|min:6|confirmed',
@@ -77,7 +77,7 @@ class AuthController extends Controller
             return redirect("files");
         }
 
-        return redirect("login")->withErrors(['invalid_data' =>'You are not allowed to access']);
+        return redirect("login")->withErrors(['invalid_data' => 'You are not allowed to access']);
     }
 
     public function signOut()

@@ -20,7 +20,7 @@
                     @foreach ($files as $file)
                         <tr>
                             <td class="table-text">
-                                <a href="{{route('file.download', ['file_name'=>$file->file_name])}}">{{ $file->file_name }}</a>
+                                <a href="{{route('file.download', ['file_name'=> rawurlencode($file->file_name)])}}">{{ $file->file_name }}</a>
                             </td>
 
                             @if($file->is_public)
@@ -69,7 +69,9 @@
                                     {{ method_field('DELETE') }}
 
                                     <button class="btn btn-outline-danger"
-                                            onclick="return confirm('Are you sure you want to delete this file?')">Delete File</button>
+                                            onclick="return confirm('Are you sure you want to delete this file?')">
+                                        Delete File
+                                    </button>
                                 </form>
                             </td>
                         </tr>

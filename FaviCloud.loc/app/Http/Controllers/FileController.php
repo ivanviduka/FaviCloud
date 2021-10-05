@@ -63,18 +63,15 @@ class FileController extends Controller
     }
 
     public function downloadFile($file_name)
-    {   $file_id =  $this->files->getIdWithName($file_name);
-        $file_public =  $this->files->getPublic($file_id->id);
-        $file_owner = $this->files->getOwner($file_id->id);
+    {
+        $fileForDownload = $this->files->getFileWithName($file_name);
 
-        if((auth()->id()==$file_owner->user_id) || $file_public->is_public){
-            $download_link = storage_path('app/uploads/' . $file_name);
-            if (file_exists($download_link)) {
-                return response()->download($download_link);
+        if ((auth()->id() == $fileForDownload->user_id) || $fileForDownload->is_public) {
+            $downloadLink = storage_path('app/uploads/' . $file_name);
+            if (file_exists($downloadLink)) {
+                return response()->download($downloadLink);
             }
-        }
-
-        else{
+        } else {
             return redirect('/unauthorized-download');
         }
 
@@ -84,19 +81,19 @@ class FileController extends Controller
     {
         $currentFile = $this->files->getFile($file_id);
 
-        $name_without_extension = pathinfo($currentFile->file_name, PATHINFO_FILENAME);
+        $nameWithoutExtension = pathinfo($currentFile->file_name, PATHINFO_FILENAME);
 
-        $current_name = substr($name_without_extension, strpos($name_without_extension, "_") + 1);
-        $current_description = $currentFile->description;
-        $current_public = $currentFile->is_public;
+        $currentName = substr($nameWithoutExtension, strpos($nameWithoutExtension, "_") + 1);
+        $currentDescription = $currentFile->description;
+        $currentPublic = $currentFile->is_public;
 
         session(['file_id' => $file_id]);
         session(['original_name' => $currentFile->file_name]);
         session(['file_type' => $currentFile->file_type]);
 
-        $currentValues = array('file_name' => $current_name,
-            'file_description' => $current_description,
-            'file_public' => $current_public);
+        $currentValues = array('file_name' => $currentName,
+            'file_description' => $currentDescription,
+            'file_public' => $currentPublic);
 
         return view('dashboard.file-update')->with('data', $currentValues);
     }
@@ -117,7 +114,7 @@ class FileController extends Controller
 
         $fileModel = new File;
         $fileModel->where('id', session()->get('file_id'))->update(
-                ['file_name' => $fileName,
+            ['file_name' => $fileName,
                 'description' => $request->description,
                 'is_public' => $request->has('public_check')]);
 
@@ -139,17 +136,16 @@ class FileController extends Controller
 
     public function shareFile($file_id)
     {
+        $fileForShare = $this->files->getFile($file_id);
 
-        if ($this->files->getOwner($file_id)->user_id != auth()->id()) {
+        if ($fileForShare->user_id != auth()->id()) {
             return redirect("/");
         }
 
-        $file = $this->files->getPublic($file_id);
-        $fileName = $this->files->getFileName($file_id);
-        $download_link = request()->getHost().':'.request()->getPort().'/download/'.$fileName->file_name;
+        $downloadLink = route('file.download', ['file_name' => rawurlencode($fileForShare->file_name)]);
 
-        $values = array('is_public' => $file->is_public,
-            'path' => $download_link);
+        $values = array('is_public' => $fileForShare->is_public,
+            'path' => $downloadLink);
 
         return view('dashboard.file-share')->with('data', $values);
     }
