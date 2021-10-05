@@ -20,7 +20,7 @@
                     @foreach ($files as $file)
                         <tr>
                             <td class="table-text">
-                                <a href="{{route('file.download', ['file_name'=>$file->file_name])}}">{{ $file->file_name }}</a>
+                                <a href="{{route('file.download', ['file_name'=> rawurlencode($file->file_name)])}}">{{ $file->file_name }}</a>
                             </td>
 
                             @if($file->is_public)
